@@ -19,37 +19,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+use amplify::Bytes32;
 
-/// # URLs
-///
-/// - `ssid:<baid58>`, chunked
-///
-/// # Armors
-///
-/// Base85 armor in "bindle" format.
-///
-/// Used for IdCert and SigCert
+use crate::{IdCert, Identity, Pk, RistrettoPk, RistrettoSig, Sig, Sk, LIB_NAME_SSID};
 
-#[macro_use]
-extern crate amplify;
-#[macro_use]
-extern crate strict_encoding;
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(StrictType, StrictDumb, StrictEncode, StrictDecode)]
+#[strict_type(lib = LIB_NAME_SSID)]
+pub struct Signature<S: Sig = RistrettoSig> {
+    pub digest: Bytes32,
+    pub sig: S,
+}
 
-mod algo;
-mod identity;
-mod sigs;
-mod bindle;
-mod proofs;
-mod seal;
+#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(StrictType, StrictDumb, StrictEncode, StrictDecode)]
+#[strict_type(lib = LIB_NAME_SSID)]
+pub struct SigCert<K: Pk = RistrettoPk> {
+    pub sig: Signature<<K::Sk as Sk>::Sig>,
+    pub id: IdCert<K>,
+}
 
-pub use crate::algo::{Fingerprint, Pk, RistrettoPk, RistrettoSig, RistrettoSk, Sig, Sk};
-pub use crate::bindle::{Bindle, BindleContent, BindleParseError, LoadError};
-pub use crate::identity::{IdCert, Identity, Revocation, Ssi};
-pub use crate::proofs::{BpProof, Proof};
-pub use crate::seal::Seal;
-pub use crate::sigs::{SigCert, Signature};
-
-pub const LIB_NAME_SSID: &str = "SSID";
-
-pub type Digest = amplify::Bytes32;
+impl<K: Pk> SigCert<K> {
+    pub fn identity(&self) -> Identity<K> { self.id.identity() }
+}

@@ -4,11 +4,14 @@ Kind: Free software
 License: Apache-2.0
 Language: Rust
 Compiler: 1.66
-Author: Maxim Orlovsky
+Author: Cypher
 Maintained: Cyphernet DAO, Switzerland
 Maintainers:
+  Cypher:
+    GPG: 54DD1B1181EC60253A9357956482D826A6BEA6F9
+    EMail: cypher@cyphernet.io
   Maxim Orlovsky:
     GitHub: @dr-orlovsky
     GPG: EAE730CEC0C663763F028A5860094BAF18A26EC9
     SSH: BoSGFzbyOKC7Jm28MJElFboGepihCpHop60nS8OoG/A
-    EMail: dr@orlovsky.ch
+    EMail: orlovsky@cyphernet.io
